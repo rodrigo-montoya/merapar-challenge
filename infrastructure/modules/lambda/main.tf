@@ -1,3 +1,4 @@
+# create lambda role
 resource "aws_iam_role" "lambda_role" {
     name = "lambda_execution_role"
 
@@ -13,11 +14,13 @@ resource "aws_iam_role" "lambda_role" {
     })
 }
 
+# attach policy to role
 resource "aws_iam_role_policy_attachment" "lambda_basic" {
     role = aws_iam_role.lambda_role.name
     policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
+# create lambda
 resource "aws_lambda_function" "string_fetcher_lambda" {
     function_name = var.function_name
     role  = aws_iam_role.lambda_role.arn
@@ -27,6 +30,7 @@ resource "aws_lambda_function" "string_fetcher_lambda" {
     source_code_hash = filebase64sha256(var.filename)
 }
 
+# permission for lambda to access parameter store
 resource "aws_iam_role_policy" "ssm_access" {
     role = aws_iam_role.lambda_role.id
 

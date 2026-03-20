@@ -2,8 +2,9 @@ import boto3
 
 ssm = boto3.client("ssm")
 
-def handler(event, context):
-    response = ssm.get_parameter(Name = "/merapar_challenge/dynamic_string")
+# gets dynamic string from parameter store and serves the html
+def serve_html():
+    response = ssm.get_parameter(Name = "/merapar-challenge/dynamic-string")
 
     value = response["Parameter"]["Value"]
 
@@ -16,3 +17,7 @@ def handler(event, context):
         },
         "body": html
     }
+
+#lambda handler
+def handler(event, context):
+    return serve_html()

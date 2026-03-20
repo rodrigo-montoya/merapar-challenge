@@ -21,4 +21,3 @@ module "ssm" {
 
     initial_string = "merapar"
 }
-
