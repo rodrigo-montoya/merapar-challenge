@@ -16,3 +16,9 @@ module "api_gateway" {
     lambda_name = "get_string"
 }
 
+module "ssm" {
+    source = "./infrastructure/modules/ssm"
+
+    initial_string = "merapar"
+}
+

@@ -26,3 +26,18 @@ resource "aws_lambda_function" "string_fetcher_lambda" {
     filename  = var.filename
     source_code_hash = filebase64sha256(var.filename)
 }
+
+resource "aws_iam_role_policy" "ssm_access" {
+    role = aws_iam_role.lambda_role.id
+
+    policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [{
+            Effect = "Allow"
+            Action = [
+                "ssm:GetParameter"
+            ]
+            Resource = "*"
+        }]
+    })
+}
